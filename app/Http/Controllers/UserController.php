@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -27,9 +28,19 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, User $user)
+    public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => ['required', 'min:10'],
+            'email' => ['required', 'min:10', 'email'],
+            'password' => ['required', 'confirmed'],
+            'role' => ['required'],
+            'group' => ['required'],
+        ]);
+
+        User::create($validated);
+
+        return redirect('/users');
     }
 
     /**
@@ -37,7 +48,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return view('users.show', ['user' => $user]);
     }
 
     /**
@@ -45,7 +56,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('users.edit', ['user' => $user]);
     }
 
     /**
@@ -53,7 +64,17 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $validated = $request->validate([
+            'name' => ['required', 'min:10'],
+            'email' => ['required', 'min:10', 'email'],
+            'role' => ['required'],
+            'group' => ['required'],
+            'password' => ['required', 'confirmed'],
+        ]);
+
+        $user->update($validated);
+
+        return redirect('/users');
     }
 
     /**
@@ -61,6 +82,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return redirect('/users');
     }
 }

@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'steven@boc.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
+            'group' => 'Superadmin'
         ]);
 
         User::factory()->create([
@@ -30,14 +31,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'hazee@boc.com',
             'password' => Hash::make('password'),
             'role' => 'teacher',
-        ]);
-
-
-         $admin = User::factory()->create([
-            'name' => 'Tebteb Nagamany',
-            'email' => 'marcus45161@gmail.com',
-            'password' => Hash::make('password'),
-            'role' => 'admin',
+            'group' => 'superadmin'
         ]);
 
         // Seed students and lessons
@@ -52,6 +46,7 @@ class DatabaseSeeder extends Seeder
             '2026-05-11',
             '2026-05-12',
             '2026-05-13',
+            '2026-05-14',
         ];
 
         // Loop through students × lessons × dates
