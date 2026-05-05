@@ -46,11 +46,11 @@
                     <div class="grid grid-cols-1 gap-4">
                         <div>
                             <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                            <x-reusables.input required type="password" name="password" placeholder="Password"/>
+                            <x-reusables.input type="password" name="password" placeholder="Password"/>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
-                            <x-reusables.input required type="password" name="password_confirmation" placeholder="Confirm Password"/>
+                            <x-reusables.input type="password" name="password_confirmation" placeholder="Confirm Password"/>
                         </div>
                     </div>
 

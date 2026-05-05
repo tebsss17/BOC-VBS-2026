@@ -69,8 +69,14 @@ class UserController extends Controller
             'email' => ['required', 'min:10', 'email'],
             'role' => ['required'],
             'group' => ['required'],
-            'password' => ['required', 'confirmed'],
+            'password' => ['nullable', 'confirmed'],
         ]);
+
+        if (!empty($validated['password'])) {
+            $validated['password'] = bcrypt($validated['password']);
+        } else {
+            unset($validated['password']);
+        }
 
         $user->update($validated);
 
