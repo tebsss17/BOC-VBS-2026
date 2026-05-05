@@ -54,7 +54,7 @@
                             Lessons
                     </a>
 
-                    <a href="/attendance"
+                    <a href="/attendances"
                     :current="request()->routeIs('/attendances')"
                     wire:navigate
                     class="flex items-center gap-2 duration-300 rounded-lg font-medium py-2 px-2 text-white hover:bg-white hover:text-[#2d4166]"

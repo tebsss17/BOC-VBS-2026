@@ -12,7 +12,8 @@ class LessonController extends Controller
      */
     public function index()
     {
-        //
+        $lessons = Lesson::all();
+        return view('lessons.index', ['lessons'=> $lessons]);
     }
 
     /**
@@ -20,7 +21,7 @@ class LessonController extends Controller
      */
     public function create()
     {
-        //
+        return view('lessons.create');
     }
 
     /**
@@ -28,7 +29,16 @@ class LessonController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'day' => ['required', 'integer'],
+            'title' => ['required', 'min:3'],
+            'description' => ['required'],
+            'memory_verse' => ['required'],
+        ]);
+
+        Lesson::create($validated);
+
+        return redirect('/lessons');
     }
 
     /**
@@ -44,7 +54,7 @@ class LessonController extends Controller
      */
     public function edit(Lesson $lesson)
     {
-        //
+        return view('lessons.edit', ['lesson' => $lesson]);
     }
 
     /**
@@ -52,7 +62,16 @@ class LessonController extends Controller
      */
     public function update(Request $request, Lesson $lesson)
     {
-        //
+        $validated = $request->validate([
+            'day' => ['required', 'integer'],
+            'title' => ['required', 'min:3'],
+            'description' => ['required'],
+            'memory_verse' => ['required'],
+        ]);
+
+        $lesson->update($validated);
+
+        return redirect('/lessons');
     }
 
     /**
@@ -60,6 +79,8 @@ class LessonController extends Controller
      */
     public function destroy(Lesson $lesson)
     {
-        //
+        $lesson->delete();
+
+        return redirect('/lessons');
     }
 }

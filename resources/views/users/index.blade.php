@@ -52,8 +52,11 @@
                        (group === '' || group === '{{ $user->group }}')
                    ">
                     <p>Name: {{ $user->name }}</p>
+                    <br>
                     <p>Email: {{ $user->email }}</p>
+                    <br>
                     <p>Role: {{ $user->role }}</p>
+                    <br>
                     <p>Group: {{ $user->group }}</p>
                 </a>
             @endforeach

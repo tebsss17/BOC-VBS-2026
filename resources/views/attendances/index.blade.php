@@ -1,7 +1,7 @@
 <x-layouts::app :title="__('Students')">
     <div x-data="{search: '', address: '', group: '' }" class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
         <x-reusables.header class="bg-main shadow-xl text-white border rounded-xl py-4 px-2 font-extrabold text-2xl text-center md:text-4xl tracking-wide">
-            Students
+            Attendances
         </x-reusables.header>
 
         <!-- Navigation Section -->

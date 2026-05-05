@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Str;
 
 class StudentController extends Controller
 {
@@ -29,12 +30,19 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
+
+        $request->merge([
+            'name' => strtolower($request->name),
+        ]);
+
         $validated = $request->validate([
-            'name' => ['required', 'min:10'],
+            'name' => ['required', 'min:10', 'unique:students,name'],
             'age' => ['required', 'integer',],
-            'address' => ['required', 'min:4'],
+            'address' => ['required',],
             'group' => ['required'],
         ]);
+
+        $validated['name'] = strtolower($validated['name']);
 
         Student::create($validated);
 
@@ -62,12 +70,19 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
+
+        $request->merge([
+            'name' => strtolower($request->name),
+        ]);
+
         $validated = $request->validate([
-            'name' => ['required', 'min:3'],
+            'name' => ['required', 'min:10', 'unique:students,name'],
             'age' => ['required', 'integer'],
             'address' => ['required'],
             'group' => ['required'],
         ]);
+
+        $validated['name'] = strtolower($validated['name']);
 
         $student->update($validated);
 
