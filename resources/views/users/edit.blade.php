@@ -7,7 +7,7 @@
         <!-- Modern form card -->
         <form action="/users/{{ $user->id }}" method="POST">
             @csrf
-            @method('patch')
+            @method('PATCH')
                 <div class="bg-white shadow-lg rounded-xl p-6 flex flex-col gap-4">
                     <!-- Name + Email -->
                     <div class="grid grid-cols-1 gap-4">
@@ -26,8 +26,8 @@
                         <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
                         <select required class="w-full bg-[#fefefe] rounded-md py-2 px-3 border-[#2d4163] border-2 shadow-lg" id="role" name="role">
                             <option value="">Select role</option>
-                            <option value="admin">Admin</option>
-                            <option value="teacher">Teacher</option>
+                            <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="teacher" {{ $user->role == 'teacher' ? 'selected' : '' }}>Teacher</option>
                         </select>
                     </div>
 
@@ -36,9 +36,9 @@
                         <label for="group" class="block text-sm font-medium text-gray-700">Group</label>
                         <select required class="w-full bg-[#fefefe] rounded-md py-2 px-3 border-[#2d4163] border-2 shadow-lg" id="group" name="group">
                             <option disabled value="">Group Name</option>
-                            <option value="tourists">Tourists</option>
-                            <option value="site seers">Site Seers</option>
-                            <option value="way farers">Way Farers</option>
+                            <option value="tourists" {{ $user->group == 'tourists' ? 'selected' : '' }}>Tourists</option>
+                            <option value="site seers" {{ $user->group == 'site seers' ? 'selected' : '' }}>Site Seers</option>
+                            <option value="way farers" {{ $user->group == 'way farers' ? 'selected' : '' }}>Way Farers</option>
                         </select>
                     </div>
 
@@ -84,7 +84,6 @@
         <form action="/users/{{ $user->id }}" method="post" id="del">
             @csrf
             @method('delete')
-
         </form>
     </div>
 </x-layouts::app>

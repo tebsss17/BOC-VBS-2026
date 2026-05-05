@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('lessons', function (Blueprint $table) {
             $table->id();
+            $table->integer('day');
             $table->string('title');
             $table->text('description');
             $table->string('memory_verse');

@@ -18,6 +18,7 @@ class LessonFactory extends Factory
     public function definition(): array
     {
         return [
+            'day' => fake()->numberBetween(1,4),
             'title' => fake()->sentence(3),
             'description' => fake()->sentence(6),
             'memory_verse' => fake()->sentence(4),

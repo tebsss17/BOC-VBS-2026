@@ -21,7 +21,7 @@ class StudentFactory extends Factory
             'name' => fake()->name(),
             'age' => fake()->numberBetween(4,12),
             'address' => fake()->city(),
-            'group' => fake()->randomElement(['Tourist', 'Site Seers' ,'Way Farers']),
+            'group' => fake()->randomElement(['tourists', 'site seers' ,'way farers']),
         ];
     }
 }

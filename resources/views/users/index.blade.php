@@ -1,5 +1,5 @@
 <x-layouts::app :title="__('Users')">
-    <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
+    <div x-data="{ search: '', role: '', group: '' }" class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
         <x-reusables.header class="bg-main shadow-xl text-white border rounded-xl py-4 px-2 font-extrabold text-2xl text-center md:text-4xl tracking-wide">
             Users
         </x-reusables.header>
@@ -10,16 +10,22 @@
             <div class="flex flex-col sm:flex-row gap-3 flex-1">
                 <!-- Search input -->
                 <input type="text"
+                       x-model="search"
                        class="bg-[#fefefe] rounded-lg py-1 px-3 border-[#2d4163] border-2 shadow-lg w-fit"
-                       placeholder="Search...">
+                       placeholder="Search name or email...">
 
                 <!-- Roles Dropdown -->
-                <select class="bg-[#fefefe] rounded-lg py-1 px-3 border-[#2d4163] border-2 shadow-lg font-medium">
+                <select x-model="role"
+                        class="bg-[#fefefe] rounded-lg py-1 px-3 border-[#2d4163] border-2 shadow-lg font-medium">
+                    <option value="">All Roles</option>
                     <option value="admin">Admin</option>
                     <option value="teacher">Teacher</option>
                 </select>
 
-                <select class="bg-[#fefefe] rounded-lg py-1 px-3 border-[#2d4163] border-2 shadow-lg font-medium">
+                <!-- Groups Dropdown -->
+                <select x-model="group"
+                        class="bg-[#fefefe] rounded-lg py-1 px-3 border-[#2d4163] border-2 shadow-lg font-medium">
+                    <option value="">All Groups</option>
                     <option value="tourists">Tourists</option>
                     <option value="site seers">Site Seers</option>
                     <option value="way farers">Way Farers</option>
@@ -37,17 +43,20 @@
         <!-- Main Section -->
         <div class="py-4 px-3 shadow-lg rounded-lg grid md:grid-cols-2 xl:grid-cols-3 items-center justify-center gap-4">
             @foreach ($users as $user)
-                <a href="/users/{{ $user->id }}/edit" class="block rounded-lg bg-blue-100 px-2 py-3 gap-2 w-full hover:scale-105 duration-300">
+                <a href="/users/{{ $user->id }}/edit"
+                   class="block rounded-lg bg-blue-100 px-2 py-3 gap-2 w-full hover:scale-105 duration-300"
+                   x-show="
+
+                       (search === '' || '{{ strtolower($user->name) }}'.includes(search.toLowerCase()) || '{{ strtolower($user->email) }}'.includes(search.toLowerCase())) &&
+                       (role === '' || role === '{{ $user->role }}') &&
+                       (group === '' || group === '{{ $user->group }}')
+                   ">
                     <p>Name: {{ $user->name }}</p>
                     <p>Email: {{ $user->email }}</p>
                     <p>Role: {{ $user->role }}</p>
-                    <p>Group: {{$user->group }}</p>
+                    <p>Group: {{ $user->group }}</p>
                 </a>
             @endforeach
-            <!-- Card Section -->
-            <div>
-
-            </div>
         </div>
     </div>
 </x-layouts::app>
