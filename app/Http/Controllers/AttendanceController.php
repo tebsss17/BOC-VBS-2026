@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
@@ -12,7 +14,8 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        return view('attendances.index');
+        $students = Student::all();
+        return view('attendances.index', compact('students'));
     }
 
     /**
@@ -28,15 +31,33 @@ class AttendanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'student_id' => ['required', 'exists:students,id'],
+            'present' => ['required', 'boolean']
+
+        ]);
+
+        Attendance::create([
+            'student_id' => $validated['student_id'],
+            'user_id' => Auth::id(),
+            'date' => today(),
+            'present' => $validated['present']
+        ]);
+
+        return redirect('/attendances');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Attendance $attendance)
+    public function show(Student $student)
     {
-        //
+        $attendanceHistory = $student->attendances()
+        ->with('user')
+        ->orderBy('date', 'desc')
+        ->get();
+
+        return view('attendances.show', compact('student', 'attendanceHistory'));
     }
 
     /**

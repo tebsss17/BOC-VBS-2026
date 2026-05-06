@@ -5,7 +5,7 @@
         </x-reusables.header>
 
         <!-- Navigation Section -->
-        <div class="py-4 px-3 shadow-lg rounded-lg flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-5">
+        <div class="p-6 shadow-lg rounded-lg flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-5">
             <!-- Left side: search + dropdown -->
             <div class="flex flex-col sm:flex-row gap-3 flex-1">
                 <!-- Search input -->
@@ -32,19 +32,12 @@
                     <option value="way farers">Way Farers</option>
                 </select>
             </div>
-
-            <!-- Add Student button -->
-            <a href="/students/create"
-               class="py-2 px-3 flex items-center shadow-lg rounded-lg bg-[#415474] hover:bg-[#546582] duration-300 text-white">
-                <i data-lucide="user-round-plus" class="w-5 h-5 mr-1"></i>
-                Add Student
-            </a>
         </div>
 
         <!-- Main Section -->
-        <div class="py-4 px-3 shadow-lg rounded-lg grid md:grid-cols-2 xl:grid-cols-3 items-center justify-center gap-4">
+        <div class="p-6 shadow-lg rounded-lg grid md:grid-cols-2 xl:grid-cols-3 items-center justify-center gap-4">
             @foreach ($students as $student)
-                <a href="/students/{{ $student->id }}/edit"
+                <a href="/attendances/{{ $student->id }}"
                    class="block rounded-lg bg-blue-100 px-3 py-3 gap-2 w-full hover:scale-105 duration-300 uppercase"
                    x-show="
                        (search === '' || '{{ strtolower($student->name) }}'.includes(search.toLowerCase())) &&

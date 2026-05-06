@@ -5,7 +5,7 @@
         </x-reusables.header>
 
         <!-- Navigation Section -->
-        <div class="py-4 px-3 shadow-lg rounded-lg flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-5">
+        <div class="p-6 shadow-lg rounded-lg flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-5">
             <!-- Left side: search + dropdown -->
             <div class="flex flex-col sm:flex-row gap-3 flex-1">
                 <!-- Search input -->
@@ -41,7 +41,7 @@
         </div>
 
         <!-- Main Section -->
-        <div class="py-4 px-3 shadow-lg rounded-lg grid md:grid-cols-2 xl:grid-cols-3 items-center justify-center gap-4">
+        <div class="p-6 shadow-lg rounded-lg grid md:grid-cols-2 xl:grid-cols-3 items-center justify-center gap-4">
             @foreach ($users as $user)
                 <a href="/users/{{ $user->id }}/edit"
                    class="block rounded-lg bg-blue-100 px-2 py-3 gap-2 w-full hover:scale-105 duration-300"

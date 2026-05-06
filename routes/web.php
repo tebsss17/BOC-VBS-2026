@@ -40,12 +40,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Attendance Routes
     Route::get('/attendances', [AttendanceController::class, 'index'] )->name('attendance.index');
-    Route::get('/lessons/create', [AttendanceController::class, 'create'] )->name('attendance.create');
-    Route::get('/lessons/{lesson}', [AttendanceController::class, 'show'] )->name('attendance.show');
-    Route::get('/lessons/{lesson}/edit', [AttendanceController::class, 'edit'] )->name('attendance.edit');
-    Route::post('/lessons', [AttendanceController::class, 'store'] )->name('attendance.store');
-    Route::patch('/lessons/{lesson}', [AttendanceController::class, 'update'] )->name('attendance.update');
-    Route::delete('/lessons/{lesson}', [AttendanceController::class, 'destroy'] )->name('attendance.destroy');
+    Route::get('/attendances/{student}', [AttendanceController::class, 'show'] )->name('attendance.show');
+    Route::post('/attendances', [AttendanceController::class, 'store'] )->name('attendance.store');
+    Route::delete('/attendances/{attendance}', [AttendanceController::class, 'destroy'] )->name('attendance.destroy');
+
 
     // Report Route
     Route::get('/attendances', [AttendanceController::class, 'index'] )->name('attendance.index');

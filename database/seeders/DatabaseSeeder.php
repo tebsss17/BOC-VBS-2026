@@ -49,18 +49,15 @@ class DatabaseSeeder extends Seeder
             '2026-05-14',
         ];
 
-        // Loop through students × lessons × dates
+        // Loop through students × dates ONLY
         foreach ($students as $student) {
-            foreach ($lessons as $lesson) {
-                foreach ($dates as $date) {
-                    Attendance::create([
-                        'student_id' => $student->id,
-                        'lesson_id'  => $lesson->id,
-                        'user_id'    => $teachers->random()->id ?? $admin->id,
-                        'date'       => $date,
-                        'present'    => fake()->boolean(70), // 70% chance present
-                    ]);
-                }
+            foreach ($dates as $date) {
+                Attendance::create([
+                    'student_id' => $student->id,
+                    'user_id'    => $teachers->random()->id,
+                    'date'       => $date,
+                    'present'    => fake()->boolean(85), // Mas mataas na chance para magmukhang legit
+                ]);
             }
         }
     }

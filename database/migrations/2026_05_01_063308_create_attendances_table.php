@@ -18,7 +18,6 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Student::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->nullable()->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Lesson::class)->constrained()->cascadeOnDelete();
             $table->date('date');
             $table->boolean('present')->default(false);
             $table->timestamps();
