@@ -44,7 +44,9 @@ class AttendanceController extends Controller
             'present' => $validated['present']
         ]);
 
-        return redirect('/attendances');
+        $student_id = $validated['student_id'];
+
+        return redirect('/attendances/' . $student_id );
     }
 
     /**
@@ -52,12 +54,17 @@ class AttendanceController extends Controller
      */
     public function show(Student $student)
     {
+
+        $alreadyMarked = $student->attendances()
+        ->whereDate('date', now()->toDateString())
+        ->exists();
+
         $attendanceHistory = $student->attendances()
         ->with('user')
         ->orderBy('date', 'desc')
         ->get();
 
-        return view('attendances.show', compact('student', 'attendanceHistory'));
+        return view('attendances.show', compact('student', 'attendanceHistory', 'alreadyMarked'));
     }
 
     /**
@@ -81,6 +88,9 @@ class AttendanceController extends Controller
      */
     public function destroy(Attendance $attendance)
     {
-        //
+        $student_id = $attendance->student_id;
+        $attendance->delete();
+
+        return redirect()->route('attendance.show', $student_id);
     }
 }

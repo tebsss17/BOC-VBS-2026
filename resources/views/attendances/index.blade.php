@@ -37,7 +37,7 @@
         <!-- Main Section -->
         <div class="p-6 shadow-lg rounded-lg grid md:grid-cols-2 xl:grid-cols-3 items-center justify-center gap-4">
             @foreach ($students as $student)
-                <a href="/attendances/{{ $student->id }}"
+                <a href="{{ route('attendance.show', $student->id) }}"
                    class="block rounded-lg bg-blue-100 px-3 py-3 gap-2 w-full hover:scale-105 duration-300 uppercase"
                    x-show="
                        (search === '' || '{{ strtolower($student->name) }}'.includes(search.toLowerCase())) &&

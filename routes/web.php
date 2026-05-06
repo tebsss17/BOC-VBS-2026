@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\LessonController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -40,16 +41,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Attendance Routes
     Route::get('/attendances', [AttendanceController::class, 'index'] )->name('attendance.index');
-    Route::get('/attendances/{student}', [AttendanceController::class, 'show'] )->name('attendance.show');
     Route::post('/attendances', [AttendanceController::class, 'store'] )->name('attendance.store');
     Route::delete('/attendances/{attendance}', [AttendanceController::class, 'destroy'] )->name('attendance.destroy');
+    Route::get('/attendances/{student}', [AttendanceController::class, 'show'] )->name('attendance.show');
 
 
     // Report Route
-    Route::get('/attendances', [AttendanceController::class, 'index'] )->name('attendance.index');
-
-
-
+    Route::get('/reports', [ReportController::class, 'index'] )->name('reports');
 });
 
 require __DIR__.'/settings.php';
