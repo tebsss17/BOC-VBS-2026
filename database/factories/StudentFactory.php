@@ -20,8 +20,9 @@ class StudentFactory extends Factory
         return [
             'name' => fake()->name(),
             'age' => fake()->numberBetween(4,12),
-            'address' => fake()->randomElement(['acapulco', 'parca 2', 'lower parca', 'zone 6']),
-            'group' => fake()->randomElement(['tourists', 'site seers' ,'way farers']),
+            'address' => fake()->randomElement(['Acapulco', 'Parca 2', 'Lower Parca', 'Zone 6']),
+            'group' => fake()->randomElement(['Tourists', 'Sightseers' ,'Wayfarers']),
+            'gender' => fake()->randomElement(['Male', 'Female']),
         ];
     }
 }

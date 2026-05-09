@@ -1,69 +1,148 @@
-<x-layouts::app :title="__('Create User')">
-    <div class="flex h-full w-full flex-1 flex-col gap-6 rounded-xl">
-        <x-reusables.header class="bg-main shadow-xl text-white border rounded-xl py-4 px-2 font-extrabold text-2xl text-center md:text-4xl tracking-wide">
+<x-layouts::app :title="__('Create Student')">
+
+    <div class="flex h-full w-full flex-1 flex-col gap-6 rounded-xl px-3 sm:px-0">
+
+        <!-- HEADER -->
+        <x-reusables.header>
             Create Student
         </x-reusables.header>
 
-        <!-- Modern form card -->
+        <!-- BACK LINK (adds navigation consistency) -->
+        <div>
+            <a href="/students"
+               class="inline-flex items-center gap-2 text-sm text-amber-700 hover:text-amber-900 transition">
+
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                Back to Students
+
+            </a>
+        </div>
+
+        <!-- FORM CARD -->
         <form action="/students" method="POST">
             @csrf
-                <div class="bg-white shadow-lg rounded-xl p-6 flex flex-col gap-4">
-                    <!-- Name + Email -->
-                    <div class="grid grid-cols-1 gap-4">
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                            <x-reusables.input required type="text" name="name" placeholder="Full Name" value="{{ old('name') }}"/>
-                        </div>
-                    </div>
 
-                    <!-- Role dropdown -->
+            <div class="bg-white border border-amber-100 shadow-sm rounded-xl p-6 flex flex-col gap-6">
+
+                <!-- GRID TOP INFO (better structure vs stacked inputs) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    <!-- NAME -->
                     <div>
-                        <label for="age" class="block text-sm font-medium text-gray-700">Age</label>
-                        <x-reusables.input required type="number" name="age" value="{{ old('age') }}"/>
+                        <label class="block text-sm font-medium text-amber-900 mb-1">Name</label>
+                        <x-reusables.input
+                            required
+                            type="text"
+                            name="name"
+                            placeholder="Full Name"
+                            value="{{ old('name') }}"
+                            class="w-full px-4 py-2 rounded-lg border border-amber-200 bg-white
+                                   focus:ring-2 focus:ring-amber-300 outline-none"
+                        />
                     </div>
 
-                    <!-- Address -->
+                    <!-- AGE -->
                     <div>
-                        <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
-                        <select required class="w-full bg-[#fefefe] rounded-md py-2 px-3 border-[#2d4163] border-2 shadow-lg" id="address" name="address">
-                            <option disabled value="">Select Address</option>
-                            <option value="acapulco">Acapulco</option>
-                            <option value="parca 2">Parca 2</option>
-                            <option value="lower parca">Lower Parca</option>
-                            <option value="zone 6">Zone 6</option>
-                        </select>
+                        <label class="block text-sm font-medium text-amber-900 mb-1">Age</label>
+                        <x-reusables.input
+                            required
+                            type="number"
+                            name="age"
+                            value="{{ old('age') }}"
+                            class="w-full px-4 py-2 rounded-lg border border-amber-200 bg-white
+                                   focus:ring-2 focus:ring-amber-300 outline-none"
+                        />
                     </div>
 
-                    <!-- Group dropdown -->
-                    <div>
-                        <label for="group" class="block text-sm font-medium text-gray-700">Group</label>
-                        <select required class="w-full bg-[#fefefe] rounded-md py-2 px-3 border-[#2d4163] border-2 shadow-lg" id="group" name="group">
-                            <option disabled value="">Group Name</option>
-                            <option value="tourists">Tourists</option>
-                            <option value="site seers">Site Seers</option>
-                            <option value="way farers">Way Farers</option>
-                        </select>
-                    </div>
-
-                    @if ($errors->any())
-                        <div class="bg-red-100 text-red-500 border-red-700 border rounded-lg py-2 px-3">
-                            @foreach ($errors->all() as $error )
-                                <div>{{ $error }}</div>
-                            @endforeach
-                        </div>
-                    @endif
-
-                    <!-- Actions -->
-                    <div class="flex flex-col sm:flex-row justify-end gap-4">
-                        <a href="/users" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 shadow-lg font-extrabold text-center duration-300">
-                            Cancel
-                        </a>
-                        <button type="submit" class="px-4 py-2 rounded-lg bg-[#415474] text-white font-semibold shadow-lg hover:bg-[#546582] duration-300">
-                            <i data-lucide="user-round-plus" class="inline w-5 h-5 mr-1"></i>
-                            Create Student
-                        </button>
-                    </div>
                 </div>
+
+                <!-- ADDRESS + GROUP -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    <div>
+                        <label class="block text-sm font-medium text-amber-900 mb-1">Address</label>
+                        <select
+                            required
+                            name="address"
+                            class="w-full px-4 py-2 rounded-lg border border-amber-200 bg-white
+                                   focus:ring-2 focus:ring-amber-300 outline-none">
+
+                            <option disabled selected>Select Address</option>
+                            <option>Acapulco</option>
+                            <option>Parca 2</option>
+                            <option>Lower Parca</option>
+                            <option>Zone 6</option>
+
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-amber-900 mb-1">Group</label>
+                        <select
+                            required
+                            name="group"
+                            class="w-full px-4 py-2 rounded-lg border border-amber-200 bg-white
+                                   focus:ring-2 focus:ring-amber-300 outline-none">
+
+                            <option disabled selected>Select Group</option>
+                            <option>Tourists</option>
+                            <option>Sightseers</option>
+                            <option>Wayfarers</option>
+
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- GENDER -->
+                <div>
+                    <label class="block text-sm font-medium text-amber-900 mb-1">Gender</label>
+                    <select
+                        required
+                        name="gender"
+                        class="w-full px-4 py-2 rounded-lg border border-amber-200 bg-white
+                               focus:ring-2 focus:ring-amber-300 outline-none">
+
+                        <option disabled selected>Select Gender</option>
+                        <option>Male</option>
+                        <option>Female</option>
+
+                    </select>
+                </div>
+
+                <!-- ERRORS -->
+                @if ($errors->any())
+                    <div class="bg-red-50 border border-red-200 text-red-600 rounded-lg p-3 text-sm">
+                        @foreach ($errors->all() as $error)
+                            <div>{{ $error }}</div>
+                        @endforeach
+                    </div>
+                @endif
+
+                <!-- ACTIONS -->
+                <div class="flex flex-col sm:flex-row justify-end gap-3 pt-2">
+
+                    <a href="/students"
+                       class="px-5 py-2 rounded-lg bg-zinc-100 hover:bg-zinc-200
+                              text-zinc-700 font-medium transition text-center">
+                        Cancel
+                    </a>
+
+                    <button type="submit"
+                        class="px-5 py-2 rounded-lg bg-amber-600 hover:bg-amber-700
+                               text-white font-medium shadow-sm transition flex items-center gap-2 justify-center">
+
+                        <i data-lucide="user-round-plus" class="w-5 h-5"></i>
+                        Create Student
+
+                    </button>
+
+                </div>
+
+            </div>
+
         </form>
+
     </div>
+
 </x-layouts::app>

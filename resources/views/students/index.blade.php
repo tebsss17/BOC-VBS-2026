@@ -1,67 +1,113 @@
 <x-layouts::app :title="__('Students')">
-    <div x-data="{search: '', address: '', group: '' }" class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-        <x-reusables.header class="bg-main shadow-xl text-white border rounded-xl py-4 px-2 font-extrabold text-2xl text-center md:text-4xl tracking-wide">
+
+    <div x-data="{ search: '', address: '', group: '' }"
+         class="flex h-full w-full flex-1 flex-col gap-6 rounded-xl px-3 sm:px-0">
+
+        <!-- HEADER -->
+        <x-reusables.header>
             Students
         </x-reusables.header>
 
-        <!-- Navigation Section -->
-        <div class="p-6 shadow-lg rounded-lg flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-5">
-            <!-- Left side: search + dropdown -->
-            <div class="flex flex-col sm:flex-row gap-3 flex-1">
-                <!-- Search input -->
+        <!-- FILTER SECTION -->
+        <div class="bg-white border border-amber-100 shadow-sm rounded-xl
+                    p-4 sm:p-5 flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
+
+            <!-- SEARCH + FILTERS -->
+            <div class="flex flex-col md:flex-row gap-4 items-start md:items-center">
+
                 <input type="text"
                        x-model="search"
-                       class="bg-[#fefefe] rounded-lg py-1 px-3 border-[#2d4163] border-2 shadow-lg w-fit"
-                       placeholder="Search...">
+                       placeholder="Search student..."
+                       class="w-full sm:flex-1 lg:w-64 px-4 py-2 rounded-lg border border-amber-200
+                              focus:ring-2 focus:ring-amber-300 outline-none bg-white">
 
-                <!-- Roles Dropdown -->
-                <select class="bg-[#fefefe] rounded-lg py-1 px-3 border-[#2d4163] border-2 shadow-lg font-medium"
-                        x-model="address">
+                <select x-model="address"
+                        class="w-full sm:w-auto lg:w-48 px-4 py-2 rounded-lg border border-amber-200 bg-white">
                     <option value="">All Address</option>
-                    <option value="acapulco">Acapulco</option>
-                    <option value="zone 6">Zone 6</option>
-                    <option value="parca 2">Parca 2</option>
-                    <option value="lower parca">Lower Parca</option>
+                    <option value="Acapulco">Acapulco</option>
+                    <option value="Zone 6">Zone 6</option>
+                    <option value="Parca 2">Parca 2</option>
+                    <option value="Lower Parca">Lower Parca</option>
                 </select>
 
-                <select class="bg-[#fefefe] rounded-lg py-1 px-3 border-[#2d4163] border-2 shadow-lg font-medium"
-                        x-model="group">
+                <select x-model="group"
+                        class="w-full sm:w-auto lg:w-48 px-4 py-2 rounded-lg border border-amber-200 bg-white">
                     <option value="">All Group</option>
-                    <option value="tourists">Tourists</option>
-                    <option value="site seers">Site Seers</option>
-                    <option value="way farers">Way Farers</option>
+                    <option value="Tourists">Tourists</option>
+                    <option value="Sightseers">Sightseers</option>
+                    <option value="Wayfarers">Wayfarers</option>
                 </select>
+
             </div>
 
-            <!-- Add Student button -->
+            <!-- ADD BUTTON -->
             <a href="/students/create"
-               class="py-2 px-3 flex items-center shadow-lg rounded-lg bg-[#415474] hover:bg-[#546582] duration-300 text-white">
-                <i data-lucide="user-round-plus" class="w-5 h-5 mr-1"></i>
+               class="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2
+                      rounded-lg bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition">
+
+                <i data-lucide="user-round-plus" class="w-5 h-5"></i>
                 Add Student
+
             </a>
+
         </div>
 
-        <!-- Main Section -->
-        <div class="p-6 shadow-lg rounded-lg grid md:grid-cols-2 xl:grid-cols-3 items-center justify-center gap-4">
+        <!-- GRID -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+
             @foreach ($students as $student)
                 <a href="/students/{{ $student->id }}/edit"
-                   class="block rounded-lg bg-blue-100 px-3 py-3 gap-2 w-full hover:scale-105 duration-300 uppercase"
                    x-show="
-                       (search === '' || '{{ strtolower($student->name) }}'.includes(search.toLowerCase())) &&
-                       (address === '' || address === '{{ $student->address }}') &&
-                       (group === '' || group === '{{ $student->group }}')
-                    ">
-                    <p>Name: <span class="font-bold">{{ $student->name }}</span></p>
-                    <br>
-                    <p>Age: <span class="font-bold">{{ $student->age }}</span></p>
-                    <br>
-                    <p>Address: <span class="font-bold">{{ $student->address }}</span></p>
-                    <br>
-                    <p>Group: <span class="font-bold">{{ $student->group }}</span></p>
+                        (search === '' ||
+                        '{{ strtolower($student->name) }}'.includes(search.toLowerCase())) &&
+                        (address === '' || address === '{{ $student->address }}') &&
+                        (group === '' || group === '{{ $student->group }}')
+                   "
+                   class="group bg-white border border-amber-100 rounded-xl shadow-sm
+                          p-5 hover:shadow-md hover:-translate-y-1 transition">
+
+                    <!-- INITIAL + NAME -->
+                    <div class="flex items-center gap-3 mb-3 pb-3 border-b border-amber-100 capitalize">
+
+                        <div class="w-10 h-10 rounded-full bg-amber-100
+                                    text-amber-800 font-bold flex items-center justify-center">
+                            {{ strtoupper(substr($student->name, 0, 1)) }}
+                        </div>
+
+                        <div>
+                            <h2 class="font-bold text-amber-900 group-hover:text-amber-700">
+                                {{ $student->name }}
+                            </h2>
+
+                            <p class="text-xs text-gray-500">
+                                Age: {{ $student->age }}
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <!-- TAGS -->
+                    <div class="flex flex-wrap gap-2">
+
+                        <span class="text-xs px-2 py-1 rounded-full bg-amber-100 text-amber-800">
+                            {{ $student->address }}
+                        </span>
+
+                        <span class="text-xs px-2 py-1 rounded-full bg-orange-100 text-orange-800">
+                            {{ $student->group }}
+                        </span>
+
+                        <span class="text-xs px-2 py-1 rounded-full bg-zinc-100 text-zinc-700">
+                            {{ $student->gender }}
+                        </span>
+
+                    </div>
+
                 </a>
             @endforeach
-                <div>
-            </div>
+
         </div>
+
     </div>
+
 </x-layouts::app>

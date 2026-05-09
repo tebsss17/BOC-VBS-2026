@@ -1,90 +1,163 @@
-<x-layouts::app :title="__('Students')">
-    <div x-data="{search: '', address: '', group: '' }" class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-        <x-reusables.header class="bg-main shadow-xl text-white border rounded-xl py-4 px-2 font-extrabold text-2xl text-center md:text-4xl tracking-wide">
+<x-layouts::app :title="__('Student Profile')">
+
+    <div class="flex h-full w-full flex-1 flex-col gap-6 rounded-xl px-3 sm:px-0">
+
+        <!-- HEADER -->
+        <x-reusables.header>
             Profile - {{ $student->name }}
         </x-reusables.header>
 
-        <!-- Profile Card -->
-        <div class="p-6 bg-red-400 flex rounded-xl flex-col ">
-            <div class="md:p-12 flex flex-col md:flex-row items-center gap-8 rounded-lg">
-                <!-- Avatar Circle -->
-                <div class=" h-28 w-28 rounded-3xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-white text-5xl font-black shadow-lg shadow-emerald-200 capitalize">
+        <!-- PROFILE CARD -->
+        <div class="bg-white border border-amber-100 shadow-sm rounded-xl p-6">
+
+            <div class="flex flex-col md:flex-row items-center gap-6">
+
+                <!-- AVATAR -->
+                <div class="h-24 w-24 rounded-full bg-amber-100 text-amber-800
+                            flex items-center justify-center text-3xl font-black uppercase">
                     {{ substr($student->name, 0, 1) }}
                 </div>
 
-                <!-- Info Section -->
+                <!-- INFO -->
                 <div class="text-center md:text-left space-y-2">
-                    <h1 class="text-3xl font-black text-slate-800 tracking-tight leading-tight uppercase">{{ $student->name }}</h1>
-                    <div class="flex flex-wrap justify-center md:justify-start gap-3">
-                        <span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-600 text-sm font-bold">{{ $student->group }}</span>
-                        <span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-600 text-sm font-bold">{{ $student->age }} Years Old</span>
-                        <span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-600 text-sm font-bold inline-flex items-center">
-                            <i data-lucide="map-pin" class="w-3 h-3 mr-1 text-emerald-500"></i> {{ $student->address }}
+
+                    <h1 class="text-2xl font-black text-amber-900 uppercase">
+                        {{ $student->name }}
+                    </h1>
+
+                    <div class="flex flex-wrap justify-center md:justify-start gap-2">
+
+                        <span class="px-3 py-1 text-xs rounded-full bg-amber-100 text-amber-800 font-semibold">
+                            {{ $student->group }}
                         </span>
+
+                        <span class="px-3 py-1 text-xs rounded-full bg-orange-100 text-orange-800 font-semibold">
+                            {{ $student->age }} Years Old
+                        </span>
+
+                        <span class="px-3 py-1 text-xs rounded-full bg-zinc-100 text-zinc-700 font-semibold">
+                            {{ $student->address }}
+                        </span>
+
                     </div>
+
                 </div>
+
             </div>
+
         </div>
 
-        <!-- Attendance forms -->
-       <div class="p-6 bg-red-400 grid rounded-xl">
+        <!-- ATTENDANCE ACTION -->
+        <div class="bg-white border border-amber-100 shadow-sm rounded-xl p-6">
+
             @if($alreadyMarked)
-                <div class="text-center py-10 bg-white/20 rounded-2xl border-2 border-dashed border-white/50">
-                    <div class="flex flex-col items-center gap-2">
-                        <i data-lucide="check-circle" class="w-12 h-12 text-green-300"></i>
-                        <h1 class="text-white text-2xl font-black tracking-widest uppercase">Attendance Recorded</h1>
-                        <p class="text-red-100 font-bold">Student is already marked for today.</p>
-                    </div>
+
+                <div class="text-center py-10">
+                    <i data-lucide="check-circle" class="w-12 h-12 text-green-500 mx-auto mb-2"></i>
+                    <h1 class="text-xl font-black text-amber-900 uppercase">
+                        Attendance Recorded
+                    </h1>
+                    <p class="text-sm text-gray-500 mt-1">
+                        This student is already marked for today.
+                    </p>
                 </div>
+
             @else
-                <div class="mb-10 flex justify-center">
-                    <h1 class="text-white md:text-4xl text-3xl font-bold text-center uppercase">Mark Attendance</h1>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <form action="{{ route('attendance.store') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="student_id" value="{{ $student->id }}">
-                        <input type="hidden" name="present" value="1">
-                        <button type="submit" class="bg-green-300 rounded-2xl px-3 py-4 font-bold items-center flex w-full justify-center text-xl duration-300 hover:bg-green-500 hover:scale-105">
-                            <i data-lucide="user-check" class="mr-1"></i> PRESENT
-                        </button>
-                    </form>
 
-                    <form action="{{ route('attendance.store') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="student_id" value="{{ $student->id }}">
-                        <input type="hidden" name="present" value="0">
-                        <button type="submit" class="bg-red-300 rounded-2xl px-3 py-4 font-bold items-center flex w-full justify-center text-xl duration-300 hover:bg-red-500 hover:scale-105">
-                            <i data-lucide="user-x" class="mr-1"></i> ABSENT
-                        </button>
-                    </form>
-                </div>
+                <h2 class="text-center text-lg font-bold text-amber-900 mb-6 uppercase">
+                    Mark Attendance
+                </h2>
+
+                <!-- SINGLE FORM (cleaner logic) -->
+                <form action="{{ route('attendance.store') }}" method="POST"
+                      class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    @csrf
+                    <input type="hidden" name="student_id" value="{{ $student->id }}">
+
+                    <button type="submit" name="present" value="1"
+                        class="w-full py-3 rounded-lg bg-green-500 hover:bg-green-600
+                               text-white font-bold flex items-center justify-center gap-2 transition">
+
+                        <i data-lucide="user-check" class="w-5 h-5"></i>
+                        PRESENT
+
+                    </button>
+
+                    <button type="submit" name="present" value="0"
+                        class="w-full py-3 rounded-lg bg-red-500 hover:bg-red-600
+                               text-white font-bold flex items-center justify-center gap-2 transition">
+
+                        <i data-lucide="user-x" class="w-5 h-5"></i>
+                        ABSENT
+
+                    </button>
+
+                </form>
+
             @endif
+
         </div>
 
-        <!-- History Page -->
-       <div class="space-y-4">
-    @forelse ($attendanceHistory as $history)
-        <div class="p-4 border border-black/10 rounded-xl bg-amber-50 flex justify-between items-center">
-            <div>
-                <p class="text-slate-500 font-bold text-sm">{{ date('M d, Y', strtotime($history->date)) }}</p>
-                <p class="text-slate-400 text-xs uppercase">Marked by: {{ $history->user->name }}</p>
-                <span class="font-black {{ $history->present ? 'text-green-500' : 'text-red-500' }} tracking-tighter text-sm">
-                    {{ $history->present ? 'PRESENT' : 'ABSENT' }}
-                </span>
-            </div>
+        <!-- HISTORY -->
+        <div class="bg-white border border-amber-100 shadow-sm rounded-xl p-6 space-y-3">
 
-            <!-- DELETE BUTTON PARA SA PAGKAMALI -->
-            <form action="{{ route('attendance.destroy', $history->id) }}" method="POST" onsubmit="return confirm('Sigurado ka bang buburahin ito?')">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                    <i data-lucide="trash-2" class="w-5 h-5"></i>
-                </button>
-            </form>
+            <h2 class="text-sm font-bold uppercase tracking-widest text-amber-900">
+                Attendance History
+            </h2>
+
+            @forelse ($attendanceHistory as $history)
+
+                <div class="flex justify-between items-center p-4 rounded-lg border border-amber-100">
+
+                    <div class="space-y-1">
+
+                        <p class="text-xs text-gray-500">
+                            {{ date('M d, Y', strtotime($history->date)) }}
+                        </p>
+
+                        <p class="text-xs text-gray-400 uppercase">
+                            Marked by: {{ $history->user?->name ?? 'System' }}
+                        </p>
+
+                        <p class="font-bold text-sm
+                            {{ $history->present ? 'text-green-600' : 'text-red-500' }}">
+
+                            {{ $history->present ? 'PRESENT' : 'ABSENT' }}
+
+                        </p>
+
+                    </div>
+
+                    <!-- DELETE -->
+                    <form action="{{ route('attendance.destroy', $history->id) }}"
+                          method="POST"
+                          onsubmit="return confirm('Delete this record?')">
+
+                        @csrf
+                        @method('DELETE')
+
+                        <button type="submit"
+                            class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition">
+
+                            <i data-lucide="trash-2" class="w-5 h-5"></i>
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            @empty
+
+                <div class="text-center text-sm text-gray-400 py-6">
+                    No attendance records yet.
+                </div>
+
+            @endforelse
+
         </div>
-    @empty
-        <!-- No records found message -->
-    @endforelse
-</div>
+
+    </div>
+
 </x-layouts::app>

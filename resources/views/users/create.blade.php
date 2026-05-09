@@ -1,77 +1,136 @@
 <x-layouts::app :title="__('Create User')">
-    <div class="flex h-full w-full flex-1 flex-col gap-6 rounded-xl">
-        <x-reusables.header class="bg-main shadow-xl text-white border rounded-xl py-4 px-2 font-extrabold text-2xl text-center md:text-4xl tracking-wide">
+
+    <div class="flex h-full w-full flex-1 flex-col gap-6 rounded-xl px-3 sm:px-0">
+
+        <!-- HEADER -->
+        <x-reusables.header>
             Create User
         </x-reusables.header>
 
-        <!-- Modern form card -->
+        <!-- BACK BUTTON -->
+        <div>
+            <a href="/users"
+               class="inline-flex items-center gap-2 text-sm text-amber-700 hover:text-amber-900 transition">
+
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                Back to Users
+
+            </a>
+        </div>
+
+        <!-- FORM CARD -->
         <form action="/users" method="POST">
             @csrf
-                <div class="bg-white shadow-lg rounded-xl p-6 flex flex-col gap-4">
-                    <!-- Name + Email -->
-                    <div class="grid grid-cols-1 gap-4">
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                            <x-reusables.input required type="text" name="name" placeholder="Full Name" value="{{ old('name') }}"/>
-                        </div>
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                            <x-reusables.input required type="email" name="email" placeholder="Email Address" value="{{ old('email') }}"/>
-                        </div>
-                    </div>
 
-                    <!-- Role dropdown -->
+            <div class="bg-white border border-amber-100 shadow-sm rounded-xl p-6 flex flex-col gap-6">
+
+                <!-- NAME + EMAIL -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
                     <div>
-                        <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
-                        <select required class="w-full bg-[#fefefe] rounded-md py-2 px-3 border-[#2d4163] border-2 shadow-lg" id="role" name="role">
-                            <option disabled value="">Select role</option>
-                            <option value="admin">Admin</option>
-                            <option value="teacher">Teacher</option>
-                        </select>
+                        <label class="block text-sm font-medium text-amber-900 mb-1">Name</label>
+                        <x-reusables.input required type="text" name="name"
+                            placeholder="Full Name"
+                            value="{{ old('name') }}"
+                            class="w-full px-4 py-2 rounded-lg border border-amber-200 focus:ring-2 focus:ring-amber-300 outline-none bg-white" />
                     </div>
 
-                    <!-- Group dropdown -->
-                     <div>
-                        <label for="group" class="block text-sm font-medium text-gray-700">Group</label>
-                        <select required class="w-full bg-[#fefefe] rounded-md py-2 px-3 border-[#2d4163] border-2 shadow-lg" id="group" name="group">
-                            <option disabled value="">Group Name</option>
-                            <option value="tourists">Tourists</option>
-                            <option value="site seers">Site Seers</option>
-                            <option value="way farers">Way Farers</option>
-                        </select>
+                    <div>
+                        <label class="block text-sm font-medium text-amber-900 mb-1">Email</label>
+                        <x-reusables.input required type="email" name="email"
+                            placeholder="Email Address"
+                            value="{{ old('email') }}"
+                            class="w-full px-4 py-2 rounded-lg border border-amber-200 focus:ring-2 focus:ring-amber-300 outline-none bg-white" />
                     </div>
 
-                    <!-- Password -->
-                    <div class="grid grid-cols-1 gap-4">
-                        <div>
-                            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                            <x-reusables.input required type="password" name="password" placeholder="Password"/>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
-                            <x-reusables.input required type="password" name="password_confirmation" placeholder="Confirm Password"/>
-                        </div>
-                    </div>
-
-                    @if ($errors->any())
-                        <div class="bg-red-100 text-red-500 border-red-700 border rounded-lg py-2 px-3">
-                            @foreach ($errors->all() as $error )
-                                <div>{{ $error }}</div>
-                            @endforeach
-                        </div>
-                    @endif
-
-                    <!-- Actions -->
-                    <div class="flex flex-col sm:flex-row justify-end gap-4">
-                        <a href="/users" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 shadow-lg font-extrabold text-center duration-300">
-                            Cancel
-                        </a>
-                        <button type="submit" class="px-4 py-2 rounded-lg bg-[#415474] text-white font-semibold shadow-lg hover:bg-[#546582] duration-300">
-                            <i data-lucide="user-round-plus" class="inline w-5 h-5 mr-1"></i>
-                            Create User
-                        </button>
-                    </div>
                 </div>
+
+                <!-- ROLE + GROUP -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    <div>
+                        <label class="block text-sm font-medium text-amber-900 mb-1">Role</label>
+                        <select required
+                            class="w-full px-4 py-2 rounded-lg border border-amber-200 bg-white
+                                   focus:ring-2 focus:ring-amber-300 outline-none"
+                            name="role">
+
+                            <option disabled selected>Select role</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Teacher">Teacher</option>
+
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-amber-900 mb-1">Group</label>
+                        <select required
+                            class="w-full px-4 py-2 rounded-lg border border-amber-200 bg-white
+                                   focus:ring-2 focus:ring-amber-300 outline-none"
+                            name="group">
+
+                            <option disabled selected>Select group</option>
+                            <option value="Tourists">Tourists</option>
+                            <option value="Sightseers">Sightseers</option>
+                            <option value="Wayfarers">Wayfarers</option>
+
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- PASSWORD -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    <div>
+                        <label class="block text-sm font-medium text-amber-900 mb-1">Password</label>
+                        <x-reusables.input required type="password" name="password"
+                            placeholder="Password"
+                            class="w-full px-4 py-2 rounded-lg border border-amber-200 focus:ring-2 focus:ring-amber-300 outline-none bg-white" />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-amber-900 mb-1">Confirm Password</label>
+                        <x-reusables.input required type="password" name="password_confirmation"
+                            placeholder="Confirm Password"
+                            class="w-full px-4 py-2 rounded-lg border border-amber-200 focus:ring-2 focus:ring-amber-300 outline-none bg-white" />
+                    </div>
+
+                </div>
+
+                <!-- ERRORS -->
+                @if ($errors->any())
+                    <div class="bg-red-50 border border-red-200 text-red-600 rounded-lg p-3 text-sm">
+                        @foreach ($errors->all() as $error)
+                            <div>{{ $error }}</div>
+                        @endforeach
+                    </div>
+                @endif
+
+                <!-- ACTIONS -->
+                <div class="flex flex-col sm:flex-row justify-end gap-3">
+
+                    <a href="/users"
+                       class="px-5 py-2 rounded-lg bg-zinc-100 hover:bg-zinc-200
+                              text-zinc-700 font-medium text-center transition">
+                        Cancel
+                    </a>
+
+                    <button type="submit"
+                        class="px-5 py-2 rounded-lg bg-amber-600 hover:bg-amber-700
+                               text-white font-medium shadow-sm transition flex items-center justify-center gap-2">
+
+                        <i data-lucide="user-round-plus" class="w-5 h-5"></i>
+                        Create User
+
+                    </button>
+
+                </div>
+
+            </div>
+
         </form>
+
     </div>
+
 </x-layouts::app>

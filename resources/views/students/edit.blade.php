@@ -1,82 +1,158 @@
-    <x-layouts::app :title="__('Create User')">
-        <div class="flex h-full w-full flex-1 flex-col gap-6 rounded-xl">
-            <x-reusables.header class="bg-main shadow-xl text-white border rounded-xl py-4 px-2 font-extrabold text-2xl text-center md:text-4xl tracking-wide">
-                Create Student
-            </x-reusables.header>
+<x-layouts::app :title="__('Edit Student')">
 
-            <!-- Modern form card -->
-            <form action="/students/{{ $student->id }}" method="POST">
-                @csrf
-                @method('PATCH')
-                    <div class="bg-white shadow-lg rounded-xl p-6 flex flex-col gap-4">
-                        <!-- Name + Email -->
-                        <div class="grid grid-cols-1 gap-4">
-                            <div>
-                                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                                <x-reusables.input required type="text" name="name" placeholder="Full Name" value="{{ $student->name }}"/>
-                            </div>
-                        </div>
+    <div class="flex h-full w-full flex-1 flex-col gap-6 rounded-xl px-3 sm:px-0">
 
-                        <!-- Role dropdown -->
-                        <div>
-                            <label for="age" class="block text-sm font-medium text-gray-700">Age</label>
-                            <x-reusables.input required type="number" name="age" value="{{ $student->age }}"/>
-                        </div>
+        <!-- HEADER -->
+        <x-reusables.header>
+            Edit Student - {{ $student->name }}
+        </x-reusables.header>
 
-                        <!-- Address -->
-                        <div>
-                            <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
-                            <select required class="w-full bg-[#fefefe] rounded-md py-2 px-3 border-[#2d4163] border-2 shadow-lg" id="address" name="address">
-                                <option disabled value="">Select Address</option>
-                                <option value="acapulco" {{ $student->address == 'acapulco' ? 'selected' : '' }}>Acapulco</option>
-                                <option value="parca 2" {{ $student->address == 'parca 2' ? 'selected' : '' }}>Parca 2</option>
-                                <option value="lower parca" {{ $student->address == 'lower parca' ? 'selected' : '' }}>Lower Parca</option>
-                                <option value="zone 6" {{ $student->address == 'zone 6' ? 'selected' : '' }}>Zone 6</option>
-                            </select>
-                        </div>
+        <!-- FORM CARD -->
+        <form action="/students/{{ $student->id }}" method="POST">
+            @csrf
+            @method('PATCH')
 
-                        <!-- Group dropdown -->
-                        <div>
-                            <label for="group" class="block text-sm font-medium text-gray-700">Group</label>
-                            <select required class="w-full bg-[#fefefe] rounded-md py-2 px-3 border-[#2d4163] border-2 shadow-lg" id="group" name="group">
-                                <option disabled value="">Group Name</option>
-                                <option value="tourists" {{ $student->group == 'tourists' ? 'selected' : '' }}>Tourists</option>
-                                <option value="site seers" {{ $student->group == 'site seers' ? 'selected' : '' }}>Site Seers</option>
-                                <option value="way farers" {{ $student->group == 'way farers' ? 'selected' : '' }}>Way Farers</option>
-                            </select>
-                        </div>
+            <div class="bg-white border border-amber-100 shadow-sm rounded-xl p-6 flex flex-col gap-6">
 
-                        @if ($errors->any())
-                            <div class="bg-red-100 text-red-500 border-red-700 border rounded-lg py-2 px-3">
-                                @foreach ($errors->all() as $error )
-                                    <div>{{ $error }}</div>
-                                @endforeach
-                            </div>
-                        @endif
+                <!-- TOP INFO -->
+                <div class="flex items-center gap-4 pb-4 border-b border-amber-100">
 
-                        <!-- Actions -->
-                        <div class="flex flex-col sm:flex-row justify-end gap-4">
-                            <a href="/students" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 shadow-lg text-center font-semibold duration-300">
-                                Cancel
-                            </a>
-
-                            <button type="submit" form="del" class="px-4 py-2 rounded-lg bg-[#415474] text-white font-semibold shadow-lg hover:bg-[#546582] duration-300">
-                                <i data-lucide="user-round-X" class="inline w-5 h-5 mr-1"></i>
-                                Delete Student
-                            </button>
-
-                            <button type="submit" class="px-4 py-2 rounded-lg bg-[#415474] text-white font-semibold shadow-lg hover:bg-[#546582] duration-300">
-                                <i data-lucide="user-round-pen" class="inline w-5 h-5 mr-1"></i>
-                                Save Student
-                            </button>
-                        </div>
+                    <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-800
+                                font-bold flex items-center justify-center text-lg">
+                        {{ strtoupper(substr($student->name, 0, 1)) }}
                     </div>
-            </form>
 
-            <form action="/students/{{ $student->id }}" method="post" id="del">
-                @csrf
-                @method('delete')
-            </form>
+                    <div>
+                        <h2 class="text-lg font-bold text-amber-900">
+                            {{ $student->name }}
+                        </h2>
+                        <p class="text-sm text-gray-500">
+                            Student Profile
+                        </p>
+                    </div>
 
-        </div>
-    </x-layouts::app>
+                </div>
+
+                <!-- NAME + AGE -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    <div>
+                        <label class="text-sm font-medium text-amber-900">Name</label>
+                        <x-reusables.input
+                            type="text"
+                            name="name"
+                            value="{{ $student->name }}"
+                            class="w-full px-4 py-2 rounded-lg border border-amber-200 bg-white focus:ring-2 focus:ring-amber-300"
+                        />
+                    </div>
+
+                    <div>
+                        <label class="text-sm font-medium text-amber-900">Age</label>
+                        <x-reusables.input
+                            type="number"
+                            name="age"
+                            value="{{ $student->age }}"
+                            class="w-full px-4 py-2 rounded-lg border border-amber-200 bg-white focus:ring-2 focus:ring-amber-300"
+                        />
+                    </div>
+
+                </div>
+
+                <!-- ADDRESS + GROUP -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    <div>
+                        <label class="text-sm font-medium text-amber-900">Address</label>
+                        <select name="address"
+                            class="w-full px-4 py-2 rounded-lg border border-amber-200 bg-white focus:ring-2 focus:ring-amber-300">
+
+                            <option value="">Select address</option>
+                            <option value="Acapulco" {{ $student->address == 'Acapulco' ? 'selected' : '' }}>Acapulco</option>
+                            <option value="Parca 2" {{ $student->address == 'Parca 2' ? 'selected' : '' }}>Parca 2</option>
+                            <option value="Lower Parca" {{ $student->address == 'Lower Parca' ? 'selected' : '' }}>Lower Parca</option>
+                            <option value="Zone 6" {{ $student->address == 'Zone 6' ? 'selected' : '' }}>Zone 6</option>
+
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-sm font-medium text-amber-900">Group</label>
+                        <select name="group"
+                            class="w-full px-4 py-2 rounded-lg border border-amber-200 bg-white focus:ring-2 focus:ring-amber-300">
+
+                            <option value="">Select group</option>
+                            <option value="Tourists" {{ $student->group == 'Tourists' ? 'selected' : '' }}>Tourists</option>
+                            <option value="Sightseers" {{ $student->group == 'Sightseers' ? 'selected' : '' }}>Sightseers</option>
+                            <option value="Wayfarers" {{ $student->group == 'Wayfarers' ? 'selected' : '' }}>Wayfarers</option>
+
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- GENDER -->
+                <div>
+                    <label class="text-sm font-medium text-amber-900">Gender</label>
+                    <select name="gender"
+                        class="w-full px-4 py-2 rounded-lg border border-amber-200 bg-white focus:ring-2 focus:ring-amber-300">
+
+                        <option value="">Select gender</option>
+                        <option value="Male" {{ $student->gender == 'Male' ? 'selected' : '' }}>Male</option>
+                        <option value="Female" {{ $student->gender == 'Female' ? 'selected' : '' }}>Female</option>
+
+                    </select>
+                </div>
+
+                <!-- ERRORS -->
+                @if ($errors->any())
+                    <div class="bg-red-50 border border-red-200 text-red-600 rounded-lg p-3 text-sm">
+                        @foreach ($errors->all() as $error)
+                            <div>{{ $error }}</div>
+                        @endforeach
+                    </div>
+                @endif
+
+                <!-- ACTIONS -->
+                <div class="flex flex-col sm:flex-row justify-between gap-3 pt-2">
+
+                    <!-- BACK -->
+                    <a href="/students"
+                       class="px-5 py-2 rounded-lg bg-zinc-100 hover:bg-zinc-200
+                              text-zinc-700 font-medium text-center transition">
+                        ← Back
+                    </a>
+
+                    <div class="flex flex-col sm:flex-row gap-3">
+
+                        <!-- DELETE -->
+                        <button type="submit" form="del"
+                            onclick="return confirm('Delete this student?')"
+                            class="px-5 py-2 rounded-lg bg-red-500 hover:bg-red-600
+                                   text-white font-medium transition">
+                            Delete
+                        </button>
+
+                        <!-- SAVE -->
+                        <button type="submit"
+                            class="px-5 py-2 rounded-lg bg-amber-600 hover:bg-amber-700
+                                   text-white font-medium shadow-sm transition">
+                            Save Changes
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+        <!-- DELETE FORM -->
+        <form action="/students/{{ $student->id }}" method="POST" id="del">
+            @csrf
+            @method('DELETE')
+        </form>
+
+    </div>
+
+</x-layouts::app>

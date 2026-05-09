@@ -40,6 +40,7 @@ class StudentController extends Controller
             'age' => ['required', 'integer',],
             'address' => ['required',],
             'group' => ['required'],
+            'gender' => ['required'],
         ]);
 
         $validated['name'] = strtolower($validated['name']);
@@ -76,10 +77,11 @@ class StudentController extends Controller
         ]);
 
         $validated = $request->validate([
-            'name' => ['required', 'min:10', 'unique:students,name'],
+            'name' => ['required', 'min:10',],
             'age' => ['required', 'integer'],
             'address' => ['required'],
             'group' => ['required'],
+            'gender' => ['required'],
         ]);
 
         $validated['name'] = strtolower($validated['name']);

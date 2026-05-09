@@ -6,14 +6,14 @@ use App\Models\Attendance;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
-class ReportController extends Controller
+class DashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $totalStuent = Student::count();
+        $totalStudent = Student::count();
 
         $avgAge = Student::avg('age');
 
@@ -54,16 +54,20 @@ class ReportController extends Controller
         $dailyPresent = $dailyAttendance->pluck('present_count');
         $dailyAbsent = $dailyAttendance->pluck('absent_count');
 
+        $perfectAttendanceCount = Attendance::select('student_id') ->groupBy('student_id') ->havingRaw('SUM(CASE WHEN present = 0 THEN 1 ELSE 0 END) = 0') ->count();
+
+        $presentToday = Attendance::where('present', 1)->whereDate('date', today())->count();
 
 
 
 
-        return view('reports', compact(
+
+        return view('dashboard', compact(
             'locationLabels',
             'locationCounts',
             'presentCount',
             'absentCount',
-            'totalStuent',
+            'totalStudent',
             'avgAge',
             'maleGender',
             'femaleGender',
@@ -73,6 +77,8 @@ class ReportController extends Controller
             'dailyLabels',
             'dailyPresent',
             'dailyAbsent',
+            'perfectAttendanceCount',
+            'presentToday'
         ));
     }
 

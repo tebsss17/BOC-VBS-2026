@@ -15,6 +15,7 @@ class Student extends Model
         'age',
         'address',
         'group',
+        'gender',
     ];
 
     public function attendances(){
