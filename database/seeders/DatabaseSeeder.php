@@ -30,36 +30,36 @@ class DatabaseSeeder extends Seeder
             'name' => 'Hazee Ilao',
             'email' => 'hazee@boc.com',
             'password' => Hash::make('password'),
-            'role' => 'teacher',
-            'group' => 'superadmin'
+            'role' => 'Teacher',
+            'group' => 'Superadmin'
         ]);
 
         // Seed students and lessons
-        $students = Student::factory(15)->create();
-        $lessons  = Lesson::factory(4)->create();
+        //$students = Student::factory(15)->create();
+      //  $lessons  = Lesson::factory(4)->create();
 
         // Seed teachers
-        $teachers = User::factory(5)->create();
+        //$teachers = User::factory(5)->create();
 
         // Define attendance dates
-        $dates = [
-            '2026-05-11',
-            '2026-05-12',
-            '2026-05-13',
-            '2026-05-14',
-        ];
+     //   $dates = [
+        //    '2026-05-11',
+//'2026-05-12',
+       //     '2026-05-13',
+      //      '2026-05-14',
+       // ];
 
         // Loop through students × dates ONLY
-        foreach ($students as $student) {
-            foreach ($dates as $date) {
-                Attendance::create([
-                    'student_id' => $student->id,
-                    'user_id'    => $teachers->random()->id,
-                    'date'       => $date,
-                    'present'    => fake()->boolean(85), // Mas mataas na chance para magmukhang legit
-                ]);
-            }
-        }
+        // foreach ($students as $student) {
+        //     foreach ($dates as $date) {
+        //         Attendance::create([
+        //             'student_id' => $student->id,
+        //             'user_id'    => $teachers->random()->id,
+        //             'date'       => $date,
+        //             'present'    => fake()->boolean(85), // Mas mataas na chance para magmukhang legit
+        //         ]);
+        //     }
+        // }
     }
 
 }
