@@ -7,6 +7,18 @@
             Profile - {{ $student->name }}
         </x-reusables.header>
 
+        <!-- BACK BUTTON -->
+        <div>
+            <a href="{{ route('attendance.index') }}"
+               class="inline-flex items-center gap-2 text-sm font-medium
+                      text-amber-700 hover:text-amber-900 transition">
+
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                Back to Attendance
+
+            </a>
+        </div>
+
         <!-- PROFILE CARD -->
         <div class="bg-white border border-amber-100 shadow-sm rounded-xl p-6">
 
@@ -54,9 +66,11 @@
 
                 <div class="text-center py-10">
                     <i data-lucide="check-circle" class="w-12 h-12 text-green-500 mx-auto mb-2"></i>
+
                     <h1 class="text-xl font-black text-amber-900 uppercase">
                         Attendance Recorded
                     </h1>
+
                     <p class="text-sm text-gray-500 mt-1">
                         This student is already marked for today.
                     </p>
@@ -68,13 +82,15 @@
                     Mark Attendance
                 </h2>
 
-                <!-- SINGLE FORM (cleaner logic) -->
+                <!-- SINGLE FORM -->
                 <form action="{{ route('attendance.store') }}" method="POST"
                       class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                     @csrf
+
                     <input type="hidden" name="student_id" value="{{ $student->id }}">
 
+                    <!-- PRESENT -->
                     <button type="submit" name="present" value="1"
                         class="w-full py-3 rounded-lg bg-green-500 hover:bg-green-600
                                text-white font-bold flex items-center justify-center gap-2 transition">
@@ -84,6 +100,7 @@
 
                     </button>
 
+                    <!-- ABSENT -->
                     <button type="submit" name="present" value="0"
                         class="w-full py-3 rounded-lg bg-red-500 hover:bg-red-600
                                text-white font-bold flex items-center justify-center gap-2 transition">
@@ -100,7 +117,7 @@
         </div>
 
         <!-- HISTORY -->
-        <div class="bg-white border border-amber-100 shadow-sm rounded-xl p-6 space-y-3">
+        <div class="bg-white border border-amber-100 shadow-sm rounded-xl p-6 space-y-4">
 
             <h2 class="text-sm font-bold uppercase tracking-widest text-amber-900">
                 Attendance History
@@ -108,43 +125,60 @@
 
             @forelse ($attendanceHistory as $history)
 
-                <div class="flex justify-between items-center p-4 rounded-lg border border-amber-100">
+                <div class="flex justify-between items-center p-4 rounded-lg
+                            bg-amber-50/40 border border-amber-100
+                            hover:bg-amber-50 transition">
 
+                    <!-- LEFT SIDE -->
                     <div class="space-y-1">
 
-                        <p class="text-xs text-gray-500">
+                        <!-- DATE (more visible now) -->
+                        <p class="text-sm font-semibold text-amber-900">
                             {{ date('M d, Y', strtotime($history->date)) }}
                         </p>
 
-                        <p class="text-xs text-gray-400 uppercase">
-                            Marked by: {{ $history->user?->name ?? 'System' }}
-                        </p>
-
-                        <p class="font-bold text-sm
-                            {{ $history->present ? 'text-green-600' : 'text-red-500' }}">
-
-                            {{ $history->present ? 'PRESENT' : 'ABSENT' }}
-
+                        <!-- MARKED BY -->
+                        <p class="text-xs text-amber-700">
+                            Marked by: <span class="font-medium text-gray-700">
+                                {{ $history->user?->name ?? 'System' }}
+                            </span>
                         </p>
 
                     </div>
 
-                    <!-- DELETE -->
-                    <form action="{{ route('attendance.destroy', $history->id) }}"
-                          method="POST"
-                          onsubmit="return confirm('Delete this record?')">
+                    <!-- RIGHT SIDE STATUS -->
+                    <div class="flex items-center gap-2">
 
-                        @csrf
-                        @method('DELETE')
+                        @if($history->present)
+                            <span class="px-3 py-1 text-xs font-bold rounded-full
+                                        bg-green-100 text-green-700 border border-green-200">
+                                PRESENT
+                            </span>
+                        @else
+                            <span class="px-3 py-1 text-xs font-bold rounded-full
+                                        bg-red-100 text-red-700 border border-red-200">
+                                ABSENT
+                            </span>
+                        @endif
 
-                        <button type="submit"
-                            class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition">
+                        <!-- DELETE -->
+                        <form action="{{ route('attendance.destroy', $history->id) }}"
+                            method="POST"
+                            onsubmit="return confirm('Delete this record?')">
 
-                            <i data-lucide="trash-2" class="w-5 h-5"></i>
+                            @csrf
+                            @method('DELETE')
 
-                        </button>
+                            <button type="submit"
+                                class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition">
 
-                    </form>
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+
+                            </button>
+
+                        </form>
+
+                    </div>
 
                 </div>
 
@@ -155,6 +189,9 @@
                 </div>
 
             @endforelse
+
+        </div>
+
 
         </div>
 

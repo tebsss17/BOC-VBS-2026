@@ -29,8 +29,9 @@
                         class="w-full sm:w-auto lg:w-48 px-4 py-2 rounded-lg
                                border border-amber-200 bg-white">
                     <option value="">All Roles</option>
-                    <option value="admin">Admin</option>
-                    <option value="teacher">Teacher</option>
+                    <option value="Teacher">Admin</option>
+                    <option value="Teahcer">Teacher</option>
+                    <option value="Superadmin">Superadmin</option>
                 </select>
 
                 <!-- Group -->
@@ -38,9 +39,9 @@
                         class="w-full sm:w-auto lg:w-48 px-4 py-2 rounded-lg
                                border border-amber-200 bg-white">
                     <option value="">All Groups</option>
-                    <option value="tourists">Tourists</option>
-                    <option value="site seers">Site Seers</option>
-                    <option value="way farers">Way Farers</option>
+                    <option value="Tourists">Tourists</option>
+                    <option value="Sightseers">Sightseers</option>
+                    <option value="Wayfarers">Wayfarers</option>
                 </select>
 
             </div>

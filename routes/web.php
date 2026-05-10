@@ -51,4 +51,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/reports', [ReportController::class, 'index'] )->name('reports');
 });
 
+
 require __DIR__.'/settings.php';

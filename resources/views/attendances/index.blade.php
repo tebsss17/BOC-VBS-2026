@@ -5,7 +5,7 @@
 
         <!-- HEADER -->
         <x-reusables.header>
-            Students
+            Attendances
         </x-reusables.header>
 
         <!-- FILTER BAR -->
@@ -31,14 +31,11 @@
 
             </div>
 
-            <!-- ADD -->
             <a href="/students/create"
                class="flex items-center justify-center gap-2 px-4 py-2 rounded-lg
                       bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition">
-
                 <i data-lucide="user-round-plus" class="w-5 h-5"></i>
                 Add Student
-
             </a>
 
         </div>
@@ -47,7 +44,6 @@
             $groups = ['Tourists', 'Sightseers', 'Wayfarers'];
         @endphp
 
-        <!-- GROUP CONTAINERS -->
         @foreach ($groups as $grp)
 
             <div class="bg-white border border-amber-100 shadow-sm rounded-xl p-5 space-y-4">
@@ -65,10 +61,16 @@
 
                 </div>
 
-                <!-- GRID INSIDE CONTAINER -->
+                <!-- GRID -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
 
                     @foreach ($students->where('group', $grp) as $student)
+
+                        @php
+                            $markedToday = $student->attendances()
+                                ->whereDate('date', now()->toDateString())
+                                ->exists();
+                        @endphp
 
                         <a href="{{ route('attendance.show', $student->id) }}"
                            x-show="
@@ -76,8 +78,18 @@
                                 '{{ strtolower($student->name) }}'.includes(search.toLowerCase())) &&
                                 (address === '' || address === '{{ $student->address }}')
                            "
-                           class="group bg-white border border-gray-100 rounded-xl shadow-sm p-5
+                           class="group relative bg-white border border-gray-100 rounded-xl shadow-sm p-5
                                   hover:shadow-md hover:-translate-y-1 transition">
+
+                            <!-- 🔵 SMALL INDICATOR (NEW) -->
+                            @if($markedToday)
+                                <span class="absolute top-3 right-3 flex items-center gap-1">
+                                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                                    <span class="text-[10px] text-green-600 hidden sm:inline">
+                                        Marked
+                                    </span>
+                                </span>
+                            @endif
 
                             <!-- NAME -->
                             <div class="flex items-center gap-3 mb-3 pb-3 border-b border-gray-100">
@@ -88,7 +100,7 @@
                                 </div>
 
                                 <div>
-                                    <h3 class="font-bold text-[#415474] group-hover:text-[#546582]">
+                                    <h3 class="font-bold text-amber-900">
                                         {{ $student->name }}
                                     </h3>
 
@@ -106,11 +118,11 @@
                                     {{ $student->address }}
                                 </span>
 
-                                <span class="text-xs px-2 py-1 rounded-full bg-orange-100 text-orange-800">
+                                <span class="px-2 py-1 rounded-full bg-orange-100 text-orange-800">
                                     {{ $student->group }}
                                 </span>
 
-                                <span class="text-xs px-2 py-1 rounded-full bg-zinc-100 text-zinc-700">
+                                <span class="px-2 py-1 rounded-full bg-zinc-100 text-zinc-700">
                                     {{ $student->gender }}
                                 </span>
 

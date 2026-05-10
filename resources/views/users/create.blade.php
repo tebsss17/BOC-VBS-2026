@@ -73,6 +73,7 @@
                             <option value="Tourists">Tourists</option>
                             <option value="Sightseers">Sightseers</option>
                             <option value="Wayfarers">Wayfarers</option>
+                            <option value="Superadmin">Superadmin</option>
 
                         </select>
                     </div>

@@ -54,8 +54,29 @@ class ReportController extends Controller
         $dailyPresent = $dailyAttendance->pluck('present_count');
         $dailyAbsent = $dailyAttendance->pluck('absent_count');
 
+        $alreadyYouth = Student::where('age', '>=', 13)->count();
+        $turningYouth = Student::where('age', '=', 12)->count();
 
+        $totalAttendance  = $presentCount + $absentCount;
 
+        $attendanceRate = $totalAttendance > 0
+            ? round(($presentCount / $totalAttendance) * 100)
+            : 0;
+
+        $tourists = Student::whereBetween('age', [4, 6])->count();
+        $sightseers = Student::whereBetween('age', [7, 9])->count();
+        $wayfarers = Student::whereBetween('age', [10, 12])->count();
+        $youth = Student::where('age', '>=', 13)->count();
+
+        $locationAbsences = Attendance::select('students.address')
+            ->selectRaw('SUM(CASE WHEN attendances.present = 0 THEN 1 ELSE 0 END) as total_absent')
+            ->join('students', 'attendances.student_id', '=', 'students.id')
+            ->groupBy('students.address')
+            ->orderByDesc('total_absent')
+            ->get();
+
+        $locationAbsenceLabels = $locationAbsences->pluck('address');
+        $locationAbsentCounts = $locationAbsences->pluck('total_absent');
 
 
         return view('reports', compact(
@@ -73,6 +94,16 @@ class ReportController extends Controller
             'dailyLabels',
             'dailyPresent',
             'dailyAbsent',
+            'turningYouth',
+            'alreadyYouth',
+            'attendanceRate',
+            'tourists',
+            'sightseers',
+            'wayfarers',
+            'youth',
+            'locationAbsenceLabels',
+            'locationAbsentCounts',
+
         ));
     }
 

@@ -12,10 +12,15 @@ class AttendanceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Student $student)
     {
+
+        $alreadyMarked = $student->attendances()
+        ->whereDate('date', now()->toDateString())
+        ->exists();
+
         $students = Student::all();
-        return view('attendances.index', compact('students'));
+        return view('attendances.index', compact('students', 'alreadyMarked'));
     }
 
     /**

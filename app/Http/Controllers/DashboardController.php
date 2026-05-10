@@ -50,13 +50,19 @@ class DashboardController extends Controller
             ->orderBy('date')
             ->get();
 
-        $dailyLabels = $dailyAttendance->pluck('date');
+        $dailyLabels = $dailyAttendance->map(function ($item) {
+    return \Carbon\Carbon::parse($item->date)->format('M d');
+});
         $dailyPresent = $dailyAttendance->pluck('present_count');
         $dailyAbsent = $dailyAttendance->pluck('absent_count');
 
         $perfectAttendanceCount = Attendance::select('student_id') ->groupBy('student_id') ->havingRaw('SUM(CASE WHEN present = 0 THEN 1 ELSE 0 END) = 0') ->count();
 
         $presentToday = Attendance::where('present', 1)->whereDate('date', today())->count();
+
+        $alreadyYouth = Student::where('age', '>=', 13)->count();
+        $turningYouth = Student::where('age', '=', 12)->count();
+
 
 
 
@@ -78,7 +84,9 @@ class DashboardController extends Controller
             'dailyPresent',
             'dailyAbsent',
             'perfectAttendanceCount',
-            'presentToday'
+            'presentToday',
+            'alreadyYouth',
+            'turningYouth'
         ));
     }
 
