@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use App\Models\Student;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -15,16 +16,17 @@ class DashboardController extends Controller
     {
         $totalStudent = Student::count();
 
-        $avgAge = Student::avg('age');
+        $avgAge = Student::avg('age') ?? 0;
 
-        $locationData = Student::select('address')
+        $locationData = Student::query()
+            ->select('address')
             ->selectRaw('count(*) as total')
             ->groupBy('address')
             ->get();
 
-        $locationLabels = $locationData->pluck('address');
+        $locationLabels = $locationData->pluck('address')->values();
 
-        $locationCounts = $locationData->pluck('total');
+        $locationCounts = $locationData->pluck('total')->values();
 
         $maleGender = Student::where('gender', 'Male')->count();
         $femaleGender = Student::where('gender', 'Female')->count();
@@ -32,31 +34,35 @@ class DashboardController extends Controller
         $presentCount = Attendance::where('present', 1)->count();
         $absentCount = Attendance::where('present', 0)->count();
 
-        $groupAttendance = Attendance::select('students.group')
+        $groupAttendance = Attendance::query()
+            ->join('students', 'attendances.student_id', '=', 'students.id')
+            ->selectRaw('students."group" as student_group')
             ->selectRaw('SUM(CASE WHEN attendances.present = 1 THEN 1 ELSE 0 END) as present_count')
             ->selectRaw('SUM(CASE WHEN attendances.present = 0 THEN 1 ELSE 0 END) as absent_count')
-            ->join('students', 'attendances.student_id', '=', 'students.id')
-            ->groupBy('students.group')
+            ->groupByRaw('students."group"')
             ->get();
 
-        $groupLabels = $groupAttendance->pluck('group');
-        $groupPresent = $groupAttendance->pluck('present_count');
-        $groupAbsent = $groupAttendance->pluck('absent_count');
+        $groupLabels = $groupAttendance->pluck('student_group')->values();
+        $groupPresent = $groupAttendance->pluck('present_count')->values();
+        $groupAbsent = $groupAttendance->pluck('absent_count')->values();
 
-        $dailyAttendance = Attendance::select('date')
+        $dailyAttendance = Attendance::query()
+            ->select('date')
             ->selectRaw('SUM(CASE WHEN present = 1 THEN 1 ELSE 0 END) as present_count')
             ->selectRaw('SUM(CASE WHEN present = 0 THEN 1 ELSE 0 END) as absent_count')
             ->groupBy('date')
             ->orderBy('date')
             ->get();
 
-        $dailyLabels = $dailyAttendance->map(function ($item) {
-    return \Carbon\Carbon::parse($item->date)->format('M d');
-});
-        $dailyPresent = $dailyAttendance->pluck('present_count');
-        $dailyAbsent = $dailyAttendance->pluck('absent_count');
+        $dailyLabels = $dailyAttendance
+            ->map(fn ($item) => Carbon::parse($item->date)->format('M d'))
+            ->values();
+        $dailyPresent = $dailyAttendance->pluck('present_count')->values();
+        $dailyAbsent = $dailyAttendance->pluck('absent_count')->values();
 
-        $perfectAttendanceCount = Attendance::select('student_id') ->groupBy('student_id') ->havingRaw('SUM(CASE WHEN present = 0 THEN 1 ELSE 0 END) = 0') ->count();
+        $perfectAttendanceCount = Student::whereDoesntHave('attendances', function ($query) {
+            $query->where('present', 0);
+        })->count();
 
         $presentToday = Attendance::where('present', 1)->whereDate('date', today())->count();
 
