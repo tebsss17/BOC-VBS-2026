@@ -25,8 +25,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
-        if (config('app.env') === 'production') {
+        if (app()->isProduction()) {
             URL::forceScheme('https');
+        }
+        $host = request()->header('x-forwarded-host', request()->getHost());
+        if ($host) {
+            URL::forceRootUrl('https://' . $host);
         }
     }
 
