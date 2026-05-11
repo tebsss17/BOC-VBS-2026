@@ -8,21 +8,25 @@
             Students
         </x-reusables.header>
 
-        <!-- FILTER SECTION -->
+                <!-- FILTER SECTION -->
         <div class="bg-white border border-amber-100 shadow-sm rounded-xl
-                    p-4 sm:p-5 flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
+                    p-4 sm:p-5 flex flex-col xl:flex-row gap-4 xl:items-center xl:justify-between">
 
             <!-- SEARCH + FILTERS -->
-            <div class="flex flex-col md:flex-row gap-4 items-start md:items-center">
+            <div class="flex flex-col md:flex-row gap-3 w-full xl:w-auto">
 
+                <!-- SEARCH -->
                 <input type="text"
                        x-model="search"
                        placeholder="Search student..."
-                       class="w-full sm:flex-1 lg:w-64 px-4 py-2 rounded-lg border border-amber-200
-                              focus:ring-2 focus:ring-amber-300 outline-none bg-white">
+                       class="w-full md:flex-1 xl:w-72 px-4 py-2 rounded-lg
+                              border border-amber-200 bg-white
+                              focus:ring-2 focus:ring-amber-300 outline-none">
 
+                <!-- ADDRESS -->
                 <select x-model="address"
-                        class="w-full sm:w-auto lg:w-48 px-4 py-2 rounded-lg border border-amber-200 bg-white">
+                        class="w-full md:w-52 px-4 py-2 rounded-lg
+                               border border-amber-200 bg-white">
                     <option value="">All Address</option>
                     <option value="Acapulco">Acapulco</option>
                     <option value="Zone 6">Zone 6</option>
@@ -30,8 +34,10 @@
                     <option value="Lower Parca">Lower Parca</option>
                 </select>
 
+                <!-- GROUP -->
                 <select x-model="group"
-                        class="w-full sm:w-auto lg:w-48 px-4 py-2 rounded-lg border border-amber-200 bg-white">
+                        class="w-full md:w-52 px-4 py-2 rounded-lg
+                               border border-amber-200 bg-white">
                     <option value="">All Group</option>
                     <option value="Tourists">Tourists</option>
                     <option value="Sightseers">Sightseers</option>
@@ -42,8 +48,9 @@
 
             <!-- ADD BUTTON -->
             <a href="/students/create"
-               class="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2
-                      rounded-lg bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition">
+               class="w-full md:w-auto flex items-center justify-center gap-2
+                      px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-700
+                      text-white shadow-sm transition">
 
                 <i data-lucide="user-round-plus" class="w-5 h-5"></i>
                 Add Student
@@ -51,6 +58,7 @@
             </a>
 
         </div>
+
 
         <!-- GRID -->
         <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
@@ -105,9 +113,11 @@
 
                 </a>
             @endforeach
-
         </div>
 
+        <div class="mt-4">
+            {{ $students->links() }}
+        </div>
     </div>
 
 </x-layouts::app>
