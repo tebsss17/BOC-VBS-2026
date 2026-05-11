@@ -5,7 +5,7 @@
     <link rel="icon" href="{{ asset('images/logo.jpg') }}" type="image/jpg">
 </head>
 
-<body class="min-h-screen bg-white dark:bg-zinc-800">
+<body class="min-h-screen bg-white ">
 
 @php
     $base = 'flex items-center gap-2 rounded-lg px-3 py-2 font-medium transition duration-200';
@@ -15,7 +15,7 @@
 
 <!-- MAIN SIDEBAR -->
 <flux:sidebar sticky collapsible="mobile"
-    class="h-screen overflow-hidden border-e border-amber-100 bg-white dark:bg-zinc-900 dark:border-zinc-700">
+    class="h-screen overflow-hidden border-e border-amber-100 bg-white ">
 
     <flux:sidebar.header class="flex items-center gap-3 px-3 py-4 border-b border-amber-100">
 
