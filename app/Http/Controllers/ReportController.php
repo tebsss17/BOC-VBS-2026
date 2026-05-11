@@ -29,12 +29,12 @@ class ReportController extends Controller
         $maleGender = Student::where('gender', 'Male')->count();
         $femaleGender = Student::where('gender', 'Female')->count();
 
-        $presentCount = Attendance::where('present', 1)->count();
-        $absentCount = Attendance::where('present', 0)->count();
+        $presentCount = Attendance::where('present', true)->count();
+        $absentCount = Attendance::where('present', false)->count();
 
         $groupAttendance = Attendance::select('students.group')
-            ->selectRaw('SUM(CASE WHEN attendances.present = 1 THEN 1 ELSE 0 END) as present_count')
-            ->selectRaw('SUM(CASE WHEN attendances.present = 0 THEN 1 ELSE 0 END) as absent_count')
+            ->selectRaw('SUM(CASE WHEN attendances.present IS TRUE THEN 1 ELSE 0 END) as present_count')
+            ->selectRaw('SUM(CASE WHEN attendances.present IS FALSE THEN 1 ELSE 0 END) as absent_count')
             ->join('students', 'attendances.student_id', '=', 'students.id')
             ->groupBy('students.group')
             ->get();
@@ -44,8 +44,8 @@ class ReportController extends Controller
         $groupAbsent = $groupAttendance->pluck('absent_count');
 
         $dailyAttendance = Attendance::select('date')
-            ->selectRaw('SUM(CASE WHEN present = 1 THEN 1 ELSE 0 END) as present_count')
-            ->selectRaw('SUM(CASE WHEN present = 0 THEN 1 ELSE 0 END) as absent_count')
+            ->selectRaw('SUM(CASE WHEN present IS TRUE THEN 1 ELSE 0 END) as present_count')
+            ->selectRaw('SUM(CASE WHEN present IS FALSE THEN 1 ELSE 0 END) as absent_count')
             ->groupBy('date')
             ->orderBy('date')
             ->get();
@@ -69,7 +69,7 @@ class ReportController extends Controller
         $youth = Student::where('age', '>=', 13)->count();
 
         $locationAbsences = Attendance::select('students.address')
-            ->selectRaw('SUM(CASE WHEN attendances.present = 0 THEN 1 ELSE 0 END) as total_absent')
+            ->selectRaw('SUM(CASE WHEN attendances.present IS FALSE THEN 1 ELSE 0 END) as total_absent')
             ->join('students', 'attendances.student_id', '=', 'students.id')
             ->groupBy('students.address')
             ->orderByDesc('total_absent')

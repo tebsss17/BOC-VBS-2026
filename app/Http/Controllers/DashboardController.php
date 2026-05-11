@@ -31,14 +31,14 @@ class DashboardController extends Controller
         $maleGender = Student::where('gender', 'Male')->count();
         $femaleGender = Student::where('gender', 'Female')->count();
 
-        $presentCount = Attendance::where('present', 1)->count();
-        $absentCount = Attendance::where('present', 0)->count();
+        $presentCount = Attendance::where('present', true)->count();
+        $absentCount = Attendance::where('present', false)->count();
 
         $groupAttendance = Attendance::query()
             ->join('students', 'attendances.student_id', '=', 'students.id')
             ->selectRaw('students."group" as student_group')
-            ->selectRaw('SUM(CASE WHEN attendances.present = 1 THEN 1 ELSE 0 END) as present_count')
-            ->selectRaw('SUM(CASE WHEN attendances.present = 0 THEN 1 ELSE 0 END) as absent_count')
+            ->selectRaw('SUM(CASE WHEN attendances.present IS TRUE THEN 1 ELSE 0 END) as present_count')
+            ->selectRaw('SUM(CASE WHEN attendances.present IS FALSE THEN 1 ELSE 0 END) as absent_count')
             ->groupByRaw('students."group"')
             ->get();
 
@@ -48,8 +48,8 @@ class DashboardController extends Controller
 
         $dailyAttendance = Attendance::query()
             ->select('date')
-            ->selectRaw('SUM(CASE WHEN present = 1 THEN 1 ELSE 0 END) as present_count')
-            ->selectRaw('SUM(CASE WHEN present = 0 THEN 1 ELSE 0 END) as absent_count')
+            ->selectRaw('SUM(CASE WHEN present IS TRUE THEN 1 ELSE 0 END) as present_count')
+            ->selectRaw('SUM(CASE WHEN present IS FALSE THEN 1 ELSE 0 END) as absent_count')
             ->groupBy('date')
             ->orderBy('date')
             ->get();
@@ -61,10 +61,10 @@ class DashboardController extends Controller
         $dailyAbsent = $dailyAttendance->pluck('absent_count')->values();
 
         $perfectAttendanceCount = Student::whereDoesntHave('attendances', function ($query) {
-            $query->where('present', 0);
+            $query->where('present', false);
         })->count();
 
-        $presentToday = Attendance::where('present', 1)->whereDate('date', today())->count();
+        $presentToday = Attendance::where('present', true)->whereDate('date', today())->count();
 
         $alreadyYouth = Student::where('age', '>=', 13)->count();
         $turningYouth = Student::where('age', '=', 12)->count();
