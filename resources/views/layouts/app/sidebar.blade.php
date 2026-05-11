@@ -50,7 +50,7 @@
         </a>
 
         <!-- USERS -->
-        @if (auth()->user()->role === 'admin')
+        @if (auth()->user()->role === 'Admin')
         <a href="/users"
            wire:navigate
            class="{{ $base }} {{ request()->is('users*') ? $active : $inactive }}">

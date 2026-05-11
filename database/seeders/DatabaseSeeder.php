@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Create admin
-        $admin = User::factory()->create([
+        User::factory()->create([
             'name' => 'Marc Steven Nagamany',
             'email' => 'steven@boc.com',
             'password' => Hash::make('password'),
@@ -33,32 +33,32 @@ class DatabaseSeeder extends Seeder
             'group' => 'Superadmin'
         ]);
 
-        // Seed students and lessons
-        $students = Student::factory(80)->create();
-        Lesson::factory(4)->create();
+    //     // Seed students and lessons
+    //     $students = Student::factory(80)->create();
+    //     Lesson::factory(4)->create();
 
-        //Seed teachers
-        $teachers = User::factory(5)->create();
+    //     //Seed teachers
+    //     $teachers = User::factory(5)->create();
 
-        // Define attendance dates
-        $dates = [
-            '2026-05-11',
-            '2026-05-12',
-            '2026-05-13',
-            '2026-05-14',
-        ];
+    //     // Define attendance dates
+    //     $dates = [
+    //         '2026-05-11',
+    //         '2026-05-12',
+    //         '2026-05-13',
+    //         '2026-05-14',
+    //     ];
 
-    //Loop through students × dates ONLY
-         foreach ($students as $student) {
-             foreach ($dates as $date) {
-                 Attendance::create([
-                     'student_id' => $student->id,
-                     'user_id'    => $teachers->random()->id,
-                     'date'       => $date,
-                     'present'    => fake()->boolean(85),
-                 ]);
-             }
-         }
+    // //Loop through students × dates ONLY
+    //      foreach ($students as $student) {
+    //          foreach ($dates as $date) {
+    //              Attendance::create([
+    //                  'student_id' => $student->id,
+    //                  'user_id'    => $teachers->random()->id,
+    //                  'date'       => $date,
+    //                  'present'    => fake()->boolean(85),
+    //              ]);
+    //          }
+    //      }
     }
 
 }

@@ -12,15 +12,17 @@ class AttendanceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Student $student)
+    public function index(Student $student, Request $request)
     {
+        $date = $request->date ?? now()->toDateString();
 
         $alreadyMarked = $student->attendances()
-        ->whereDate('date', now()->toDateString())
-        ->exists();
+            ->whereDate('date', $date)
+            ->exists();
 
         $students = Student::all();
-        return view('attendances.index', compact('students', 'alreadyMarked'));
+
+        return view('attendances.index', compact('students', 'alreadyMarked', 'date'));
     }
 
     /**
@@ -37,39 +39,51 @@ class AttendanceController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'student_id' => ['required', 'exists:students,id'],
-            'present' => ['required', 'boolean']
+        'student_id' => ['required', 'exists:students,id'],
+        'present' => ['required', 'boolean'],
+        'date' => ['required', 'date'],
+    ]);
 
-        ]);
+        $date = date('Y-m-d', strtotime($validated['date']));
 
-        Attendance::create([
-            'student_id' => $validated['student_id'],
-            'user_id' => Auth::id(),
-            'date' => today(),
-            'present' => $validated['present']
-        ]);
+        Attendance::updateOrCreate(
+            [
+                'student_id' => $validated['student_id'],
+                'date' => $date,
+            ],
+            [
+                'user_id' => Auth::id(),
+                'present' => $validated['present'],
+            ]
+        );
 
-        $student_id = $validated['student_id'];
-
-        return redirect('/attendances/' . $student_id );
+        return redirect()->route('attendance.index', [
+        'date' => $date
+]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Student $student)
+    public function show(Student $student, Request $request)
     {
+        $date = $request->date ?? now()->toDateString();
 
         $alreadyMarked = $student->attendances()
-        ->whereDate('date', now()->toDateString())
-        ->exists();
+            ->whereDate('date', $date)
+            ->exists();
 
         $attendanceHistory = $student->attendances()
-        ->with('user')
-        ->orderBy('date', 'desc')
-        ->get();
+            ->with('user')
+            ->orderBy('date', 'desc')
+            ->get();
 
-        return view('attendances.show', compact('student', 'attendanceHistory', 'alreadyMarked'));
+        return view('attendances.show', compact(
+            'student',
+            'attendanceHistory',
+            'alreadyMarked',
+            'date'
+        ));
     }
 
     /**

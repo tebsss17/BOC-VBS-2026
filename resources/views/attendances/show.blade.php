@@ -60,61 +60,21 @@
         </div>
 
         <!-- ATTENDANCE ACTION -->
-        <div class="bg-white border border-amber-100 shadow-sm rounded-xl p-6">
-
             @if($alreadyMarked)
+                <div class="bg-white border border-amber-100 shadow-sm rounded-xl p-6">
+                    <div class="text-center py-10">
+                        <i data-lucide="check-circle" class="w-12 h-12 text-green-500 mx-auto mb-2"></i>
 
-                <div class="text-center py-10">
-                    <i data-lucide="check-circle" class="w-12 h-12 text-green-500 mx-auto mb-2"></i>
+                        <h1 class="text-xl font-black text-amber-900 uppercase">
+                            Attendance Recorded
+                        </h1>
 
-                    <h1 class="text-xl font-black text-amber-900 uppercase">
-                        Attendance Recorded
-                    </h1>
-
-                    <p class="text-sm text-gray-500 mt-1">
-                        This student is already marked for today.
-                    </p>
+                        <p class="text-sm text-gray-500 mt-1">
+                            This student is already marked for today.
+                        </p>
+                    </div>
                 </div>
-
-            @else
-
-                <h2 class="text-center text-lg font-bold text-amber-900 mb-6 uppercase">
-                    Mark Attendance
-                </h2>
-
-                <!-- SINGLE FORM -->
-                <form action="{{ route('attendance.store') }}" method="POST"
-                      class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                    @csrf
-
-                    <input type="hidden" name="student_id" value="{{ $student->id }}">
-
-                    <!-- PRESENT -->
-                    <button type="submit" name="present" value="1"
-                        class="w-full py-3 rounded-lg bg-green-500 hover:bg-green-600
-                               text-white font-bold flex items-center justify-center gap-2 transition">
-
-                        <i data-lucide="user-check" class="w-5 h-5"></i>
-                        PRESENT
-
-                    </button>
-
-                    <!-- ABSENT -->
-                    <button type="submit" name="present" value="0"
-                        class="w-full py-3 rounded-lg bg-red-500 hover:bg-red-600
-                               text-white font-bold flex items-center justify-center gap-2 transition">
-
-                        <i data-lucide="user-x" class="w-5 h-5"></i>
-                        ABSENT
-
-                    </button>
-
-                </form>
-
             @endif
-
-        </div>
 
         <!-- HISTORY -->
         <div class="bg-white border border-amber-100 shadow-sm rounded-xl p-6 space-y-4">

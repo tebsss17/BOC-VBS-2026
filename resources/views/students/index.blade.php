@@ -114,10 +114,6 @@
                 </a>
             @endforeach
         </div>
-
-        <div class="mt-4">
-            {{ $students->links() }}
-        </div>
     </div>
 
 </x-layouts::app>
