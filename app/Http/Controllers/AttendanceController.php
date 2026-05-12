@@ -16,13 +16,17 @@ class AttendanceController extends Controller
     {
         $date = $request->date ?? now()->toDateString();
 
-        $alreadyMarked = $student->attendances()
-            ->whereDate('date', $date)
-            ->exists();
+        $students = Student::orderBy('name')->get();
 
-        $students = Student::all();
+        $markedStudents = Attendance::whereDate('date', $date)
+            ->pluck('student_id')
+            ->flip();
 
-        return view('attendances.index', compact('students', 'alreadyMarked', 'date'));
+        return view('attendances.index', compact(
+            'students',
+            'markedStudents',
+            'date'
+        ));
     }
 
     /**

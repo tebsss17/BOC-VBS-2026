@@ -80,9 +80,7 @@
                     @foreach ($students->where('group', $grp) as $student)
 
                         @php
-                            $marked = $student->attendances()
-                                ->whereDate('date', $date ?? now()->toDateString())
-                                ->exists();
+                            $marked = isset($markedStudents[$student->id]);
                         @endphp
 
                         <div x-show="search === '' || '{{ strtolower($student->name) }}'.includes(search.toLowerCase())"
